@@ -1,0 +1,5 @@
+    - name: Install extra raspberry modules
+      apt:
+        name: linux-modules-extra-raspi
+        update_cache: yes
+        state: latest

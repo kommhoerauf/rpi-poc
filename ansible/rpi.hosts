@@ -1,0 +1,15 @@
+[workstation]
+l-mgmt ansible_host=192.168.0.1 ansible_user=ubuntu static_interface=eth1 public_interface=eth0
+
+[ceph]
+l-srv1 ansible_host=192.168.0.2 ansible_user=ubuntu static_interface=eth0
+l-srv2 ansible_host=192.168.0.3 ansible_user=ubuntu static_interface=eth0
+l-srv3 ansible_host=192.168.0.4 ansible_user=ubuntu static_interface=eth0
+l-srv4 ansible_host=192.168.0.5 ansible_user=ubuntu static_interface=eth0
+l-srv5 ansible_host=192.168.0.6 ansible_user=ubuntu static_interface=eth0
+l-srv6 ansible_host=192.168.0.7 ansible_user=ubuntu static_interface=eth0
+
+[ceph_mon]
+l-srv1
+l-srv2
+l-srv3

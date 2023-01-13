@@ -1,0 +1,13 @@
+127.0.0.1	localhost
+::1		localhost ip6-localhost ip6-loopback
+ff02::1		ip6-allnodes
+ff02::2		ip6-allrouters
+
+127.0.1.1		raspberrypi
+{{ hostvars["l-mgmt"].ansible_host }}             l-mgmt
+{{ hostvars["l-srv1"].ansible_host }}             l-srv1
+{{ hostvars["l-srv2"].ansible_host }}             l-srv2
+{{ hostvars["l-srv3"].ansible_host }}             l-srv3
+{{ hostvars["l-srv4"].ansible_host }}             l-srv4
+{{ hostvars["l-srv5"].ansible_host }}             l-srv5
+{{ hostvars["l-srv6"].ansible_host }}             l-srv6

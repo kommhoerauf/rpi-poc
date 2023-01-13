@@ -1,0 +1,9 @@
+  - name: Remove default cloudinit netplan file
+    file:
+      path: /etc/netplan/50-cloud-init.yaml
+      state: absent
+
+  - name: Create static netplan file
+    template:
+      src: templates/static-netplan.yaml
+      dest: /etc/netplan/{{ static_interface }}.yaml

@@ -1,0 +1,17 @@
+    - name: Install grafana apt key and repository
+      block:
+        - name: grafana apt key
+          get_url:
+            url: https://apt.grafana.com/gpg.key
+            dest: /usr/share/keyrings/grafana.key
+
+        - name: grafana apt source
+          apt_repository:
+            repo: "deb [signed-by=/usr/share/keyrings/grafana.key] https://apt.grafana.com stable main"
+            state: present
+
+    - name: Install grafana itself
+      apt:
+        name: grafana
+        update_cache: yes
+        state: latest

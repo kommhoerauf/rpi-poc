@@ -1,0 +1,10 @@
+network:
+  version: 2
+  ethernets:
+    {{ static_interface }}:
+     addresses: [{{ ansible_ssh_host }}/24]
+     routes:
+     - to: default
+       via: {{ hostvars["l-mgmt"].ansible_host }}
+     nameservers:
+       addresses: [8.8.8.8,8.8.4.4]

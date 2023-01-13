@@ -1,0 +1,4 @@
+  - name: Set hostname
+    template:
+      src: templates/hostname
+      dest: /etc/hostname

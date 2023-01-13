@@ -1,0 +1,26 @@
+---
+#- name: Include workstation playbook
+#  import_playbook: workstation.yml
+
+- hosts: ceph
+  become: yes
+  become_user: root
+  roles:
+    - netplan
+
+- hosts: all
+  become: yes
+  become_user: root
+  vars:
+    node_exporter_version: 1.5.0
+  roles:
+    - hostname
+    - systemctl
+    - hosts
+    - prometheus_node_exporter
+
+- hosts: ceph
+  become: yes
+  become_user: root
+  roles:
+    - packages

@@ -1,0 +1,4 @@
+  - name: Configure hosts
+    template:
+      src: templates/hosts
+      dest: /etc/hosts

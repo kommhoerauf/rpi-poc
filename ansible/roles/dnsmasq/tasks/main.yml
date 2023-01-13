@@ -1,0 +1,91 @@
+   - name: Install dnsmasq
+     apt:
+       name: dnsmasq
+       update_cache: yes
+       state: latest
+
+   - name: Install pxelinux
+     apt:
+       name: pxelinux
+       update_cache: yes
+       state: latest
+
+   - name: Install syslinux-efi
+     apt:
+       name: pxelinux 
+       update_cache: yes
+       state: latest
+
+   - name: Configure dnsmasq for dhcp
+     template:
+       src: templates/dnsmasq.conf
+       dest: /etc/dnsmasq.conf
+
+   - name: Configure dnsmasq
+     template:
+       src: templates/dnsmasq.conf
+       dest: /etc/default/dnsmasq
+
+
+   - name: Create netboot bios directory
+     file:
+       path: /mnt/data/netboot/bios
+       state: directory
+
+   - name: Create netboot efi64 directory
+     file:
+       path: /mnt/data/netboot/efi64
+       state: directory
+
+   - name: Create netboot boot directory
+     file:
+       path: /mnt/data/netboot/boot
+       state: directory
+
+   - name: Copy syslinux files
+     copy:
+       src: /usr/lib/syslinux/modules/bios/{{ item }}
+       dest: /mnt/data/netboot/bios/
+      with_items:
+       - ldlinux.c32
+       - vesamenu.c32
+       - libcom32.c32
+       - libutil.c32
+
+   - name: Copying further efi64 files
+     copy:
+       src: /usr/lib/SYSLINUX.EFI/efi64/syslinux.efi
+       dest: /mnt/data/netboot/efi64/
+
+   - name: Copy efi64 files
+     copy:
+       src: /usr/lib/syslinux/modules/efi64/{{ item }}
+       dest: /mnt/data/netboot/efi64/
+      with_items:
+       - ldlinux.e64
+       - vesamenu.c32
+       - libcom32.c32
+       - libutil.c32
+
+   - name: Create ubuntu netboot directory
+     file:
+       path: /mnt/data/netboot/boot/arm64/ubuntu/22.04
+       state: directory
+
+# TBD - Download iso and copy files to netboot directories
+# sudo mount -o loop -t iso9660 /home/ubuntu/Downloads/ubuntu-22.04.2-live-server-arm64.iso /media
+# sudo rsync -av /media/ /mnt/data/netboot/boot/arm64/ubuntu/22.04
+
+   - name: Create netboot pxelinux config directory
+     file:
+       path: /mnt/data/netboot/pxelinux.cfg
+       state: directory
+
+   - name: Create boot menu entry
+     copy:
+       src: default
+       dest: /mnt/data/netboot/pxelinux.cfg/
+
+# cd /mnt/data/netboot/
+# ln -rs pxelinux.cfg bios && ln -rs pxelinux.cfg efi64
+

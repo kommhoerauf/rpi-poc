@@ -1,0 +1,13 @@
+  - name: Stop apt-daily.timer
+    systemd:
+      name: apt-daily.timer
+      state: stopped
+      enabled: false
+      masked: true
+
+  - name: Disable apt-daily-upgrade.timer
+    systemd:
+      name: apt-daily-upgrade.timer
+      state: stopped
+      enabled: false
+      masked: true

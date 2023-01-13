@@ -1,0 +1,15 @@
+---
+- hosts: workstation
+  become: yes
+  become_user: root
+  connection: local
+  vars:
+    version: 2.41.0
+  roles:
+    - locale
+    - dhcp
+    - sysctl
+    - iptables
+    #- dnsmasq
+    - prometheus
+    - grafana
