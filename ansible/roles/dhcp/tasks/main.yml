@@ -1,0 +1,4 @@
+  - name: Configure dhcpd for static ip
+    template:
+      src: templates/dhcpcd.conf
+      dest: /etc/dhcpcd.conf

@@ -1,0 +1,66 @@
+    - name: create prometheus group
+      group:
+        name: prometheus
+        state: present
+
+    - name: create prometheus user
+      user:
+        name: prometheus
+        group: prometheus
+        createhome: no
+        system: yes
+        state: present
+
+    - name: create local directory for storing prometheus data
+      file:
+        owner: prometheus
+        group: prometheus
+        path: /var/lib/prometheus
+        state: directory
+
+    - name: create config directory for prometheus
+      file:
+        owner: prometheus
+        group: prometheus
+        path: /etc/prometheus
+        state: directory
+
+    - name: download prometheus
+      get_url:
+        url: https://github.com/prometheus/prometheus/releases/download/v{{ version }}/prometheus-{{ version }}.linux-armv7.tar.gz
+        dest: /opt/prometheus
+
+    - name: unarchive prometheus
+      unarchive:
+        remote_src: yes
+        src: /opt/prometheus/prometheus-{{ version }}.linux-armv7.tar.gz
+        dest: /opt/prometheus
+
+    - name: copy prometheus binary
+      file:
+        path: /usr/local/bin/prometheus
+        state: link
+        src: /opt/prometheus/prometheus-{{ version }}.linux-armv7/prometheus
+
+    - name: copy promtool binary
+      file:
+        path: /usr/local/bin/promtool
+        state: link
+        src: /opt/prometheus/prometheus-{{ version }}.linux-armv7/promtool
+
+    - name: roll out prometheus configuration
+      template:
+        dest: /etc/prometheus/prometheus.yml
+        src: templates/prometheus.yml
+
+    - name: install unit file for prometheus
+      template:
+        src: files/prometheus.service
+        dest: /etc/systemd/system/prometheus.service
+
+    - name: configure systemd to use prometheus
+      systemd:
+        daemon_reload: yes
+        enabled: yes
+        state: started
+        name: prometheus.service

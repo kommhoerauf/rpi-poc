@@ -1,0 +1,24 @@
+  # After the first run of ansible on the workstation
+  # we use iptables_persistent to save those rules to 
+  # make them persistent to reboots
+  - name: Setup forward iptables nat rule
+    iptables:
+      chain: FORWARD
+      in_interface: "{{ static_interface }}"
+      jump: ACCEPT
+      comment: workstation nat forwad rule
+
+  - name: Setup postroute iptables nat rule
+    iptables:
+      table: nat
+      chain: POSTROUTING
+      out_interface: "{{ public_interface }}"
+      jump: MASQUERADE
+      comment: workstation nat postroute rule
+
+  - name: Install iptables-persistent
+    apt:
+      name: iptables-persistent
+      update_cache: yes
+      state: latest
+      force_apt_get: True

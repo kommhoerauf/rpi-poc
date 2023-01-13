@@ -1,0 +1,7 @@
+    - name: Ensure the de locale exists
+      locale_gen:
+        name: de_DE.UTF-8
+        state: present
+
+    - name: set as default locale
+      command: localectl set-locale LANG=de_DE.UTF-8 LANGUAGE=de_DE
